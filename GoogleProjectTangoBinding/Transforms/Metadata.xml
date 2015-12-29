@@ -7,6 +7,5 @@
   <remove-node path="/api/package[@name='android.support.v4.content']/class[@name='CursorLoader']/method[@name='loadInBackground']" />
   -->
 
-  <!--<remove-node path="/api/package[@name='com.google.atap.tangoservice']/interface[@name='Tango.OnCloudUpdateListener']" />-->
-  <attr path="/api/package[@name='com.google.atap.tangoservice']/interface[@name='Tango.OnCloudUpdateListener']" name="visibility">public</attr>
+  <remove-node path="/api/package[@name='com.google.atap.tangoservice']/interface[@name='Tango.OnCloudUpdateListener']" />
 </metadata>
