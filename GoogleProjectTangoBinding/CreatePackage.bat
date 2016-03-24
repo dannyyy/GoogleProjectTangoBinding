@@ -1,0 +1,1 @@
+nuget pack GoogleProjectTangoBinding.csproj -Prop Configuration=Release
