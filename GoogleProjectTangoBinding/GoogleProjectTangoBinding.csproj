@@ -43,6 +43,7 @@
   <ItemGroup>
     <None Include="Jars\AboutJars.txt" />
     <None Include="Additions\AboutAdditions.txt" />
+    <LibraryProjectZip Include="Jars\TangoSupport_Mira_Java.aar" />
   </ItemGroup>
   <ItemGroup>
     <TransformFile Include="Transforms\Metadata.xml" />
@@ -53,7 +54,7 @@
     <EmbeddedReferenceJar Include="Jars\tango-cloud-lib.jar" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedJar Include="Jars\TangoSDK_Jih_Java.jar" />
+    <EmbeddedJar Include="Jars\TangoSDK_Mira_Java.jar" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.Bindings.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
