@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>$id$</id>
-    <version>1.36.0</version>
+    <version>1.36.1</version>
     <title>GoogleProjectTangoBinding</title>
     <authors>Danny Meier (development@danflash.com)</authors>
     <owners>Danny Meier (development@danflash.com)</owners>
