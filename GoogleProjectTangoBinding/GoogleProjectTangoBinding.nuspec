@@ -2,14 +2,14 @@
 <package >
   <metadata>
     <id>$id$</id>
-    <version>1.37.0</version>
+    <version>1.39.0</version>
     <title>GoogleProjectTangoBinding</title>
     <authors>Danny Meier (development@danflash.com)</authors>
     <owners>Danny Meier (development@danflash.com)</owners>
     <projectUrl>https://github.com/dannyyy/GoogleProjectTangoBinding</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Project Tango SDK Binding for Xamarin.Android (.NET)</description>
-    <releaseNotes>Binding updated for Project Tango SDK 1.37 (Okul)</releaseNotes>
+    <releaseNotes>Binding updated for Project Tango SDK 1.39 (Qianru)</releaseNotes>
     <copyright>Copyright 2016</copyright>
     <tags>Google Project Tango Xamarin Android Binding</tags>
   </metadata>
