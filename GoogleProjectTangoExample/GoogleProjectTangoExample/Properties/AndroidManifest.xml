@@ -1,5 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android" package="GoogleProjectTangoExample.GoogleProjectTangoExample" android:versionCode="1" android:versionName="1.0">
 	<uses-sdk android:minSdkVersion="19" android:targetSdkVersion="19" />
+	<uses-feature android:glEsVersion="0x00020000" android:required="true" />
+	<uses-library android:name="com.projecttango.libtango_device2" android:required="true" />
+	<uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+	<uses-permission android:name="android.permission.CAMERA" />
 	<application android:label="GoogleProjectTangoExample" android:icon="@drawable/Icon"></application>
 </manifest>

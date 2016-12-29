@@ -6,6 +6,7 @@ using Android.Util;
 using Com.Google.Atap.Tangoservice;
 using Java.Lang;
 using Exception = System.Exception;
+using Com.Projecttango.Tangosupport;
 
 namespace GoogleProjectTangoExample
 {
@@ -20,67 +21,86 @@ namespace GoogleProjectTangoExample
 
         protected override void OnCreate(Bundle bundle)
         {
+            Log.Debug(Tag, "OnCreate");
             base.OnCreate(bundle);
 
             // Set our view from the "main" layout resource
             SetContentView(Resource.Layout.Main);
-
-            // Get our button from the layout resource,
-            // and attach an event to it
-            Button button = FindViewById<Button>(Resource.Id.ButtonStart);
-
-            button.Click += (s, e) => StartSensorReading();
+            Log.Debug(Tag, "OnCreate Done");
         }
 
         protected override void OnDestroy()
         {
+            Log.Debug(Tag, "OnDestroy");
             base.OnDestroy();
-
-            if (_tango != null)
-                _tango.Disconnect();
         }
 
-        private void StartSensorReading()
+        protected override void OnPause()
         {
-            _tango = new Tango(this);
+            Log.Debug(Tag, "OnPause");
+            base.OnPause();
+            _tango.Disconnect();
+        }
 
-            /* Tango Configuration */
+        protected override void OnResume()
+        {
+            Log.Debug(Tag, "OnResume");
+            base.OnResume();
 
-            _tangoConfig = _tango.GetConfig(TangoConfig.ConfigTypeDefault);
+            _tango = new Tango(this, new Runnable(() =>
+            {
+                Log.Debug(Tag, "TangoRunnable");
+                //try
+                //{
+                TangoSupport.Initialize();
+                    _tangoConfig = SetupTangoConfig(_tango);
+                    _tango.Connect(_tangoConfig);
+                    startupTango();
+                //}
+                //catch (TangoOutOfDateException e)
+                //{
+                //    Log.Error(Tag, GetString(R.
+                //    string.exception_out_of_date),
+                //    e)
+                //    ;
+                //}
+                //catch (TangoErrorException e)
+                //{
+                //    Log.Error(Tag, GetString(R.
+                //    string.exception_tango_error),
+                //    e)
+                //    ;
+                //}
+                //catch (TangoInvalidException e)
+                //{
+                //    Log.Error(Tag, GetString(R.
+                //    string.exception_tango_invalid),
+                //    e)
+                //    ;
+                //}
+            }));
+        }
 
-            // Whether deep percetion should be enabled (point cloud)
-            _tangoConfig.PutBoolean(TangoConfig.KeyBooleanDepth, true);
-
-            // Whether the tango system should auto reset in case of failure
-            _tangoConfig.PutBoolean(TangoConfig.KeyBooleanAutorecovery, true);
-
-            // Whether the area should be learned while operating (can be saved as ADF later)
-            _tangoConfig.PutBoolean(TangoConfig.KeyBooleanLearningmode, false);
-
-            // Whether motion (translation / rotation) should be captured
-            _tangoConfig.PutBoolean(TangoConfig.KeyBooleanMotiontracking, true);
-
-            // If an ADF is existing this config option loads the appropriate area description file
-            // _tangoConfig.PutString(TangoConfig.KeyStringAreadescription, "ADF-UUID");
-
-            /* Create Tango Listener */
-            var framePairs = new List<TangoCoordinateFramePair>();
-            framePairs.Add(new TangoCoordinateFramePair(TangoPoseData.CoordinateFrameStartOfService, TangoPoseData.CoordinateFrameDevice));
-            
-            // Add this line if a ADF is loaded
-            framePairs.Add(new TangoCoordinateFramePair(TangoPoseData.CoordinateFrameAreaDescription, TangoPoseData.CoordinateFrameDevice));
-
+        private void startupTango()
+        {
+            var framePairs = new List<TangoCoordinateFramePair>()
+            {
+                new TangoCoordinateFramePair(
+                    TangoPoseData.CoordinateFrameStartOfService,
+                    TangoPoseData.CoordinateFrameDevice)
+            };
             _tangoUpdateListener = new TangoUpdateListener();
             _tango.ConnectListener(framePairs, _tangoUpdateListener);
+        }
 
-            try
-            {
-                _tango.Connect(_tangoConfig);
-            }
-            catch (Exception ex)
-            {
-                Log.Error(Tag, Throwable.FromException(ex), ex.Message);
-            }
+        private TangoConfig SetupTangoConfig(Tango tango)
+        {
+            // Create a new Tango Configuration and enable the MotionTrackingActivity API.
+            TangoConfig config = tango.GetConfig(TangoConfig.ConfigTypeDefault);
+            config.PutBoolean(TangoConfig.KeyBooleanMotiontracking, true);
+            // Tango service should automatically attempt to recover when it enters an invalid state.
+            config.PutBoolean(TangoConfig.KeyBooleanAutorecovery, true);
+            return config;
         }
     }
 
@@ -89,6 +109,11 @@ namespace GoogleProjectTangoExample
         public void OnFrameAvailable(int p0)
         {
             // Nothing
+        }
+
+        public void OnPointCloudAvailable(TangoPointCloudData p0)
+        {
+            
         }
 
         public void OnPoseAvailable(TangoPoseData p0)
